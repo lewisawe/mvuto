@@ -1,0 +1,24 @@
+{
+  "name": "mvuto",
+  "version": "1.0.0",
+  "description": "Mvuto — a Newtonian gravity physics sandbox in the browser. Fling glowing bodies into a dark-space canvas and watch them attract, orbit, and merge.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "generate:presets": "tsx mcp-server/scripts/export-presets.ts",
+    "mcp:build": "cd mcp-server && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "fast-check": "3.23.2",
+    "tsx": "4.19.2",
+    "typescript": "5.9.3",
+    "vite": "6.4.3",
+    "vitest": "2.1.9"
+  }
+}

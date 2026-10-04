@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "mvuto-bodies": {
+      "command": "node",
+      "args": ["mcp-server/dist/index.js"],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

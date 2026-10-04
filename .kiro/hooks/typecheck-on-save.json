@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Typecheck on save",
+  "description": "After any TypeScript file is saved, run the project typecheck. Deliberately runs typecheck (fast) and NOT the test suite, so saving files cannot trigger repeated expensive test runs.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["**/*.ts"]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npm run typecheck"
+  }
+}

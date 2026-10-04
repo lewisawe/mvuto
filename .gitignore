@@ -1,0 +1,11 @@
+node_modules/
+dist/
+mcp-server/node_modules/
+mcp-server/dist/
+*.log
+.DS_Store
+.vite/
+
+# NOTE: src/presets/presets.generated.json is intentionally NOT ignored.
+# It is a committed artifact so a fresh clone runs `npm run dev` without
+# first regenerating presets from the MCP server.

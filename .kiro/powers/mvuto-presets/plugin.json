@@ -1,0 +1,8 @@
+{
+  "$schema": "https://kiro.dev/schemas/power.json",
+  "name": "mvuto-presets",
+  "version": "1.0.0",
+  "description": "Guidance for working with Mvuto's celestial presets: how the shared MCP preset module, the exporter, and the app adapter fit together, and how to add a new preset safely.",
+  "author": "Mvuto",
+  "keywords": ["mvuto", "presets", "physics", "mcp", "gravity"]
+}
