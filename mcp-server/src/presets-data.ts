@@ -20,7 +20,12 @@ export interface PresetBody {
   readonly hue: number;
 }
 
-export const PRESET_NAMES = ['solar-system', 'binary-stars', 'galaxy'] as const;
+export const PRESET_NAMES = [
+  'solar-system',
+  'binary-stars',
+  'galaxy',
+  'trojan-asteroids',
+] as const;
 export type PresetName = (typeof PRESET_NAMES)[number];
 
 export const isPresetName = (name: string): name is PresetName =>
@@ -119,6 +124,74 @@ const galaxy = (): PresetBody[] => {
   return bodies;
 };
 
+/**
+ * A dominant central star with one large planet on a circular orbit, plus two
+ * clusters of small asteroids trapped near the planet's L4 and L5 Lagrange
+ * points. In the restricted three-body problem these points sit ±60° from the
+ * planet along its orbit, at the same orbital radius, forming equilateral
+ * triangles with the star and planet. Each asteroid is given the local circular
+ * orbital velocity (perpendicular to its radius vector) so the cluster co-orbits
+ * with the planet, with small seeded jitter so the swarm looks organic but the
+ * export stays deterministic (REQ-25).
+ */
+const trojanAsteroids = (): PresetBody[] => {
+  const rand = mulberry32(0x74726f); // "tro"
+  const G = 1; // must match DEFAULT_G for circular-orbit velocity
+  const starMass = 20000;
+  const planetMass = 400;
+  const orbitR = 320;
+
+  const bodies: PresetBody[] = [
+    { id: 'star', pos: { x: 0, y: 0 }, vel: { x: 0, y: 0 }, mass: starMass, hue: 48 },
+  ];
+
+  // Circular orbital speed around the (dominant) star at a given radius.
+  const circularSpeed = (r: number): number => Math.sqrt((G * starMass) / r);
+
+  // Place a body on a counter-clockwise circular orbit at (angle, radius).
+  const orbitingBody = (
+    id: string,
+    angle: number,
+    radius: number,
+    mass: number,
+    hue: number,
+  ): PresetBody => {
+    const px = Math.cos(angle) * radius;
+    const py = Math.sin(angle) * radius;
+    const speed = circularSpeed(radius);
+    // Tangent direction (perpendicular to radius), counter-clockwise.
+    const vx = -Math.sin(angle) * speed;
+    const vy = Math.cos(angle) * speed;
+    return { id, pos: { x: px, y: py }, vel: { x: vx, y: vy }, mass, hue };
+  };
+
+  // The large planet, placed along the +x axis.
+  const planetAngle = 0;
+  bodies.push(orbitingBody('planet', planetAngle, orbitR, planetMass, 200));
+
+  // L4 leads the planet by +60°, L5 trails by −60°.
+  const deg60 = Math.PI / 3;
+  const clusters: Array<[string, number, number]> = [
+    ['l4', planetAngle + deg60, 20], // [id prefix, centre angle, hue]
+    ['l5', planetAngle - deg60, 330],
+  ];
+  const perCluster = 12;
+  for (const [prefix, centreAngle, hue] of clusters) {
+    for (let i = 0; i < perCluster; i++) {
+      // Scatter each asteroid slightly in angle and radius around the point.
+      const angle = centreAngle + (rand() - 0.5) * 0.22;
+      const radius = orbitR + (rand() - 0.5) * 36;
+      const mass = 1 + rand() * 3;
+      const hueJitter = hue + (rand() - 0.5) * 30;
+      bodies.push(
+        orbitingBody(`${prefix}-asteroid-${i + 1}`, angle, radius, mass, hueJitter),
+      );
+    }
+  }
+
+  return bodies;
+};
+
 /** Return the bodies for a named preset. Throws on unknown names. */
 export const getPresetData = (name: string): PresetBody[] => {
   switch (name) {
@@ -128,6 +201,8 @@ export const getPresetData = (name: string): PresetBody[] => {
       return binaryStars();
     case 'galaxy':
       return galaxy();
+    case 'trojan-asteroids':
+      return trojanAsteroids();
     default:
       throw new Error(
         `Unknown preset "${name}". Known presets: ${PRESET_NAMES.join(', ')}.`,
