@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "mvuto-bodies": {
-      "command": "node",
-      "args": ["mcp-server/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "tsx", "mcp-server/src/index.ts"],
       "disabled": false,
       "autoApprove": []
     }
