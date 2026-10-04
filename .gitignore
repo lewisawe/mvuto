@@ -9,3 +9,6 @@ mcp-server/dist/
 # NOTE: src/presets/presets.generated.json is intentionally NOT ignored.
 # It is a committed artifact so a fresh clone runs `npm run dev` without
 # first regenerating presets from the MCP server.
+
+# Submission writeup is kept local, not published
+SUBMISSION.md
