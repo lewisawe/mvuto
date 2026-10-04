@@ -8,6 +8,8 @@ Built as a submission for the **Kiro University Challenge**: the `.kiro/` folder
 demonstrates all 7 required lessons plus 2 bonus lessons (mapped below), and the
 app itself is a working browser toy.
 
+**Live demo:** https://lewisawe.github.io/mvuto/
+
 ![starfield canvas with glowing orbiting bodies — run `npm run dev` to see it live]
 
 ## What's inside
@@ -66,8 +68,8 @@ where each one lives in this repo.
 | 5 | **Powers (plugin manifest + skill)** | `.kiro/powers/mvuto-presets/plugin.json` and `.kiro/powers/mvuto-presets/skills/presets/SKILL.md` |
 | 6 | **MCP server integration** | `mcp-server/` (server `mvuto-bodies`, tools `list_presets`/`get_preset`) + `.kiro/settings/mcp.json` registration |
 | 7 | **Custom agents** | `.kiro/agents/physics-reviewer.json` (enforces core purity + reviews the math) |
-| Bonus 1 | **MCP as source of truth / shared-module data flow** | `mcp-server/src/presets-data.ts` reused by both the MCP tools and `scripts/export-presets.ts` → `src/presets/presets.generated.json` |
-| Bonus 2 | **Authoring a Skill** | `.kiro/powers/mvuto-presets/skills/presets/SKILL.md` ("Working with Mvuto presets") |
+| Bonus 1 | **Kiro Web / cloud sessions / cloud configuration** | The `trojan-asteroids` preset was added entirely in a Kiro **cloud session** on this repo (branch `add-trojan-asteroids-preset`, merged via PR #1), using the same synced `.kiro/` steering + agents. Lands in `mcp-server/src/presets-data.ts` + regenerated `src/presets/presets.generated.json`. |
+| Bonus 2 | **Package a Kiro power** | `.kiro/powers/mvuto-presets/plugin.json` (manifest) bundling the skill `.kiro/powers/mvuto-presets/skills/presets/SKILL.md` |
 
 ## Project layout
 
